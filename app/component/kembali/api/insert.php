@@ -1,27 +1,23 @@
 <?php
-  require_once($_SERVER['DOCUMENT_ROOT'].'/maha/module/config.php');
-  require_once($_SERVER['DOCUMENT_ROOT'].'/maha/module/function.php');
+  require_once('../../../module/config.php');
   header('Content-Type: application/json');
 
   $dataParams = json_decode(file_get_contents('php://input'));
   // $dataParams = json_decode($_POST['data']);
 
-  $id = isset($dataParams->id) ? $db->real_escape_string($dataParams->id): '';
-  $jenis = isset($dataParams->jenis) ? $db->real_escape_string($dataParams->jenis): '';
-  $no = isset($dataParams->no) ? $db->real_escape_string($dataParams->no): '';
-  $status = isset($dataParams->status) ? $db->real_escape_string($dataParams->status): '0';
-  $userId = isset($dataParams->userId) ? $db->real_escape_string($dataParams->userId): '';
+  $id = isset($dataParams->idMember) ? $db->real_escape_string($dataParams->idMember): '';
+  $tgKembali = isset($dataParams->tgKembali) ? $db->real_escape_string($dataParams->tgKembali): '';
+  $denda = isset($dataParams->denda) ? $db->real_escape_string($dataParams->denda): '';
+  $idPin = isset($dataParams->idPin) ? $db->real_escape_string($dataParams->idPin): '';
+  $idUser = isset($dataParams->idUser) ? $db->real_escape_string($dataParams->idUser): '';
   
   $act = '';
   $error = '';
-    
-  if(empty($jenis)){
-    $error .= 'Jenis harus diisi<br>';
+   
+ 
+  if(empty($tgKembali)){
+    $error .= 'Tanggal kembali harus diisi<br>';
   }
-  if(empty($no)){
-    $error .= 'No harus diisi<br>';
-  }
-
    
   if($error != '') {
     die(json_encode(array('success'=>false, 'message'=>$error)));
@@ -29,32 +25,25 @@
   
   if(empty($id))
   {
-    
-    $sql = "INSERT INTO jenis_invt_ (_jenis, _no,_status) VALUES (?, ?, ?)";
-    $stmt = $db->prepare($sql) or die($db->error);
-    $stmt->bind_param('sss', $jenis,$no,$status);
-    $executeAction = $stmt->execute() or die($db->error);
-
+    $query = $db->query("INSERT INTO pengembalian VALUES ('','$tgKembali','$denda','$idPin','$idUser')");
     $act = 'Menambah';
   }
   else
   {
-    $sql = "UPDATE jenis_invt_ SET _jenis=?, _no=?, _status=? WHERE _jenisID=?";
-    $stmt = $db->prepare($sql) or die($db->error);
-    $stmt->bind_param('ssss', $jenis,$no,$status,$id);
-    $executeAction = $stmt->execute() or die($db->error);
-    
-    $act = 'Mengubah';
+    $act = 'Mengedit';
+    $query = $db->query("UPDATE pengembalian set 
+                                          tgKembali = '$tgKembali',
+                                          denda = '$denda'
+                                          where idKembali = $id
+                                          ");
   }
   
-  $historyMessage = $act.' jenis '.$jenis;
     
-  //createHistory($db, $historyMessage, $userId);
 
-  $success = array('success' => true, 'message'=>$act.' jenis sukses' );
-  $failed = array('success' => false, 'message'=>$act.' jenis gagal' );
+  $success = array('success' => true, 'message'=>$act.' pengembalian sukses' );
+  $failed = array('success' => false, 'message'=>$act.' pengembalian gagal' );
 
-  print_r(json_encode($executeAction ? $success : $failed));
+  print_r(json_encode($query ? $success : $failed));
 
 
 ?>
