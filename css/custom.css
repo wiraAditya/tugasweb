@@ -1,0 +1,32 @@
+body{padding-right: 0px !important}
+.img-header{
+	width: 35px;
+	height: 35px;
+}
+.sidebar-minimized .logo-text{
+	display: none;
+}
+.sidebar .nav-dropdown-items .nav-item {
+    padding-left: 15px;
+}
+.navbar-header::after{
+	content: "";
+    display: block;
+    height: 2px;
+    width: 80%;
+    background-color: #677179;
+    margin: 10px auto;
+}
+.navbar-header{color:rgba(255,255,255,0.7); }
+.ps .navbar-header>i{font-size: 60px;margin: 20px 0px;}
+.navbar-header>p{display: none}
+.ps .navbar-header>p{display: block}
+.navbar-header>i{font-size: 30px;margin: 20px 0px;}
+/*.modal.fade {
+  z-index: 1040 !important;
+}
+.modal-dialog{z-index: 1}
+.modal-backdrop.show {
+    opacity: .5;
+    z-index: 1039;
+}*/
