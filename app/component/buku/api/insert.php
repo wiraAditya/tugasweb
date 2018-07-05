@@ -36,10 +36,10 @@
   else
   {
     $act = 'Mengedit';
-    $query = $db->query("UPDATE member set 
+    $query = $db->query("UPDATE buku set 
                                           judul = '$judul',
                                           idKategori = '$idKategori',
-                                          penerbit = '$penerbit',
+                                          penerbit = '$penerbit'
                                           where idBuku = $id
                                           ");
   }

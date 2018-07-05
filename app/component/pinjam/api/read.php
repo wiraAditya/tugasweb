@@ -1,20 +1,21 @@
 <?php
-  require_once($_SERVER['DOCUMENT_ROOT'].'/maha/module/config.php');
-  require_once($_SERVER['DOCUMENT_ROOT'].'/maha/module/function.php');
+  require_once('../../../module/config.php');
   header('Content-Type: application/json');
 
   $dataParams = json_decode(file_get_contents('php://input'));
 
-  $sql="SELECT * FROM jenis_invt_ ORDER BY _jenisID DESC";
+  $sql="SELECT * FROM peminjaman a 
+          inner join member b on a.idMember=b.idMember
+          inner join user c on a.idUser = c.idUser ORDER BY idMember DESC";
 
   $executeSql = $db->query($sql);
   if($executeSql->num_rows){
     while ($row =  $executeSql->fetch_assoc()) {
-      $asset[] = $row; 
+      $pinjam[] = $row; 
     }
-    die(json_encode(array('success'=>true, 'jenis'=>$asset)));      
+    die(json_encode(array('success'=>true, 'pinjam'=>$pinjam)));      
   }else {
-    die(json_encode(array('success'=>false, 'jenis'=>null )));
+    die(json_encode(array('success'=>false, 'pinjam'=>null )));
   }
 
 ?>
