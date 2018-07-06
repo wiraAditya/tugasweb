@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 05 Jul 2018 pada 07.01
--- Versi Server: 10.1.21-MariaDB
--- PHP Version: 5.6.30
+-- Generation Time: Jul 06, 2018 at 09:43 AM
+-- Server version: 10.1.21-MariaDB
+-- PHP Version: 7.0.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -23,32 +23,29 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `buku`
+-- Table structure for table `buku`
 --
 
 CREATE TABLE `buku` (
   `idBuku` int(11) NOT NULL,
   `judul` varchar(255) NOT NULL,
   `idKategori` int(11) NOT NULL,
-  `penerbit` varchar(255) NOT NULL,
-  `status` tinyint(1) NOT NULL
+  `penerbit` int(11) NOT NULL,
+  `status` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `buku`
+--
+
+INSERT INTO `buku` (`idBuku`, `judul`, `idKategori`, `penerbit`, `status`) VALUES
+(1, 'asdasd', 2, 0, 1),
+(2, 'asdasd', 2, 0, 1);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `detpinjam`
---
-
-CREATE TABLE `detpinjam` (
-  `idPinjam` int(11) NOT NULL,
-  `idBuku` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `kategoribuku`
+-- Table structure for table `kategoribuku`
 --
 
 CREATE TABLE `kategoribuku` (
@@ -56,10 +53,18 @@ CREATE TABLE `kategoribuku` (
   `kategori` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `kategoribuku`
+--
+
+INSERT INTO `kategoribuku` (`idKategori`, `kategori`) VALUES
+(1, 'agama'),
+(2, 'novel');
+
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `member`
+-- Table structure for table `member`
 --
 
 CREATE TABLE `member` (
@@ -70,25 +75,43 @@ CREATE TABLE `member` (
   `noTelp` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `member`
+--
+
+INSERT INTO `member` (`idMember`, `nama`, `alamat`, `noKtp`, `noTelp`) VALUES
+(1, 'wira', 31351, '3213131', '353131');
+
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `peminjaman`
+-- Table structure for table `peminjaman`
 --
 
 CREATE TABLE `peminjaman` (
   `idPin` int(11) NOT NULL,
+  `kode` int(11) NOT NULL,
   `tglPinjam` date NOT NULL,
   `tglKembali` date NOT NULL,
   `jaminan` varchar(255) NOT NULL,
   `idUser` int(11) NOT NULL,
-  `idMember` int(11) NOT NULL
+  `idMember` int(11) NOT NULL,
+  `idBuku` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `peminjaman`
+--
+
+INSERT INTO `peminjaman` (`idPin`, `kode`, `tglPinjam`, `tglKembali`, `jaminan`, `idUser`, `idMember`, `idBuku`) VALUES
+(1, 3323, '2018-07-06', '2018-07-06', 'ktp', 1, 1, 1),
+(2, 13151531, '2018-07-06', '2018-07-06', '', 1, 1, 1),
+(4, 2147483647, '2018-07-27', '2018-07-27', '23213213', 1, 1, 1);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `pengembalian`
+-- Table structure for table `pengembalian`
 --
 
 CREATE TABLE `pengembalian` (
@@ -99,10 +122,18 @@ CREATE TABLE `pengembalian` (
   `idUser` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `pengembalian`
+--
+
+INSERT INTO `pengembalian` (`idKembali`, `tglKembali`, `denda`, `idPin`, `idUser`) VALUES
+(8, '2018-04-07', 1, 2, 1),
+(9, '2018-07-24', 20000, 4, 1);
+
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `petugas`
+-- Table structure for table `petugas`
 --
 
 CREATE TABLE `petugas` (
@@ -113,15 +144,18 @@ CREATE TABLE `petugas` (
   `alamat` text NOT NULL,
   `telp` varchar(15) NOT NULL,
   `role` tinyint(4) NOT NULL,
-  `status` int(11) NOT NULL
+  `status` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 --
--- Dumping data untuk tabel `petugas`
+-- Dumping data for table `petugas`
 --
 
 INSERT INTO `petugas` (`idUser`, `un`, `pw`, `nama`, `alamat`, `telp`, `role`, `status`) VALUES
-(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', 'admin', '081', 1, 1);
+(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', 'admin', '081', 1, 1),
+(2, 'wira', '6215f4770ee800ad5402bc02be783c26', 'wira', 'jlana', '082144552704', 1, 0),
+(3, 'wiraaditya', 'b84a208080229a5b8be6d60751664a8a', 'wira', 'wira', '082', 2, 1),
+(4, 'wiras', 'b84a208080229a5b8be6d60751664a8a', 'wiras', 'wira', 'wiras', 2, 1);
 
 --
 -- Indexes for dumped tables
@@ -146,6 +180,12 @@ ALTER TABLE `member`
   ADD PRIMARY KEY (`idMember`);
 
 --
+-- Indexes for table `peminjaman`
+--
+ALTER TABLE `peminjaman`
+  ADD PRIMARY KEY (`idPin`);
+
+--
 -- Indexes for table `pengembalian`
 --
 ALTER TABLE `pengembalian`
@@ -165,27 +205,32 @@ ALTER TABLE `petugas`
 -- AUTO_INCREMENT for table `buku`
 --
 ALTER TABLE `buku`
-  MODIFY `idBuku` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idBuku` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `kategoribuku`
 --
 ALTER TABLE `kategoribuku`
-  MODIFY `idKategori` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idKategori` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `member`
 --
 ALTER TABLE `member`
-  MODIFY `idMember` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idMember` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `peminjaman`
+--
+ALTER TABLE `peminjaman`
+  MODIFY `idPin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `pengembalian`
 --
 ALTER TABLE `pengembalian`
-  MODIFY `idKembali` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idKembali` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `petugas`
 --
 ALTER TABLE `petugas`
-  MODIFY `idUser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idUser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
