@@ -4,7 +4,7 @@
 
   $dataParams = json_decode(file_get_contents('php://input'));
 
-  $sql="SELECT * FROM pengembalian a
+  $sql="SELECT a.*,c.nama as member,d.un as user FROM pengembalian a
         inner join peminjaman b on a.idPin = b.idPin
         inner join member c on b.idMember = c.idMember
         inner join petugas d on a.idUser = d.idUser ORDER BY idKembali DESC";

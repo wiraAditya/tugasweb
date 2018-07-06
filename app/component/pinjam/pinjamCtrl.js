@@ -7,26 +7,39 @@ app.controller('pinjamCtrl', function($rootScope, $scope, $http) {
     $scope.readData = function() {
         $http.post(readPHP, {
         }).then(function(response) {
-            $scope.datamember = response.data.member;
+            $scope.datapinjam = response.data.pinjam;
         })
     }
-    $scope.readDataDetail = function(idPinjam) {
-        $http.post('app/component/pinjam/api/readDetail.php', {
-            'idPinjam':idPinjam
+    $scope.readDataMember = function() {
+        $http.post('app/component/member/api/read.php', {
         }).then(function(response) {
-            $scope.datamember = response.data.member;
+            $scope.dataMember = response.data.member;
         })
     }
 
+    $scope.readDataBuku = function() {
+        $http.post('app/component/buku/api/read.php', {
+        }).then(function(response) {
+            $scope.dataBuku = response.data.buku;
+        })
+    }
+    $scope.bukusetTable = function (idbuku) {
+      $scope.datasettable=[];
+      $scope.datasettable[0] = $scope.dataBuku.find( data => data.idBuku === idbuku );
+    
+    }
     //start header informasi
     $scope.startInsert = function() {
         $scope.header = "Tambahkan Pinjam";
-        $scope.idPinjam = '';
         $scope.tglPinjam = ""; 
+
+        var date = new Date();
+        $scope.kode = date.getFullYear()+""+date.getMonth()+1+""+date.getDate()+""+date.getHours()+""+date.getMinutes()+""+date.getSeconds();
         $scope.tglKembali = ""; 
+        $scope.tglPinjam  = ""; 
         $scope.jaminan = ""; 
         $scope.member = "";
-        $scope.bukupijam =[]; 
+        $scope.idBuku = ""; 
     }
 
     //delete 
@@ -68,36 +81,41 @@ app.controller('pinjamCtrl', function($rootScope, $scope, $http) {
 
     //clear form modal hide
     $('#modalSubmit').on('hidden.bs.modal', function() {
-        $scope.idPinjam = '';
-        $scope.tglPinjam = ""; 
         $scope.tglKembali = ""; 
+        $scope.tglPinjam  = ""; 
         $scope.jaminan = ""; 
         $scope.member = "";
-        $scope.bukupijam =[];  
+        $scope.idBuku = "";   
     })
 
     //read edit
     $scope.readEdit = function(idArrayData) {
       $scope.header = "Edit Peminjaman";
-      var dataEdit = $scope.datamember.find( data => data.idMember === idArrayData );
+      var dataEdit = $scope.datapinjam.find( data => data.idPin === idArrayData );
       $scope.idPinjam =dataEdit.idPin;
       $scope.tglPinjam = dataEdit.tglPinjam;
       $scope.tglKembali = dataEdit.tglKembali;
       $scope.jaminan = dataEdit.jaminan;
       $scope.member =dataEdit.idMember;
+      $scope.kode =dataEdit.kode;
       
-      $scope.bukupijam =$scope.readDataDetail(dataEdit.idPin);
+      $scope.idBuku =dataEdit.idBuku;
+      $scope.bukusetTable(dataEdit.idBuku);
     }
+
     $scope.action = function() {
         console.log($scope.status);
         $("body").append(loadScreen);
         $http.post(actionPHP, {
-            'idMember': $scope.idMember,
-            'nama': $scope.nama,
-            'alamat': $scope.alamat,
-            'telp': $scope.noTelp,
-            'noKtp': $scope.noKtp
-            
+            'idPin':$scope.idPinjam,
+            'tglPinjam':$scope.tglPinjam,
+            'tglKembali':$scope.tglKembali,
+            'jaminan':$scope.jaminan,
+            'idMember':$scope.member,
+            'kode':$scope.kode,
+            'idBuku' : $scope.idBuku,
+            'idUser':$rootScope.sesid
+
         }).then(function(response) {
             $(".wraploading").remove();
             if (response.data.success) {

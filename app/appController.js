@@ -8,7 +8,11 @@ function appController($http, $scope, $rootScope, $cookies, $route, $routeParams
 
   $scope.formdata=[];
   $rootScope.select2 = function () {
-    $('.select2').select2();
+    $('.select2').select2({ width: '100%' });
+  }
+  
+  $rootScope.datepickerSet = function () {
+    $('.datepicker').datepicker();
   }
   $rootScope.checkbox = function () {
     $('input').iCheck({

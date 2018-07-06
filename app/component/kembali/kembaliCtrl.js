@@ -1,39 +1,61 @@
-app.controller('jenisController', function($rootScope, $scope, $http) {
+app.controller('pengembalianCtrl', function($rootScope, $scope, $http,$filter) {
 
-    var readPHP = 'app/component/jenis/api/jenisRead.php';
-    var deletePHP = 'app/component/jenis/api/jenisDelete.php';
-    var actionPHP = 'app/component/jenis/api/jenisInsert.php';
-    $scope.statusfilter="1";
-    //read jenis
-    $scope.readData = function() {
-        $scope.datafilter = [];
-        $http.post(readPHP, {
+    var readPHP = 'app/component/kembali/api/read.php';
+    var deletePHP = 'app/component/kembali/api/delete.php';
+    var actionPHP = 'app/component/kembali/api/insert.php';
+    //read 
+    $scope.readDetailTr = function (idPin) {
+        var dataEditpin = $scope.datagetpin.find( data => data.idPin === idPin );
+        $scope.kodepin = dataEditpin.kode;
+        $scope.memberpin = dataEditpin.member;
+        $scope.tglKembalipin = dataEditpin.tglKembali;
+        $scope.tglPinjampin = dataEditpin.tglPinjam;
+        console.log(dataEditpin);
+        $scope.bukusetTable(dataEditpin.idBuku);
+    }
+    $scope.readPinjam = function (id="") {
+        $http.post('app/component/pinjam/api/read.php', {
+            'kembali':true ,
+            'idPin':id
         }).then(function(response) {
-            $scope.datajenis = response.data.jenis;
+            $scope.datagetpin = response.data.pinjam;
         })
     }
+    $scope.readData = function() {
+        $http.post(readPHP, {
+        }).then(function(response) {
+            $scope.dataKembali = response.data.kembali;
+        })
+    }
+    $scope.readDataBuku = function() {
+        $http.post('app/component/buku/api/read.php', {
+        }).then(function(response) {
+            $scope.dataBuku = response.data.buku;
+        })
+    }
+        $scope.readDataBuku();
 
+    $scope.bukusetTable = function (idbuku) {
+      console.log(idbuku)
+      $scope.datasettable=[];
+      $scope.datasettable[0] = $scope.dataBuku.find( data => data.idBuku === idbuku );
+    
+    }
     //start header informasi
     $scope.startInsert = function() {
-        $scope.header = "Tambahkan Jenis";
-        $scope.jenisID = '';
-        $scope.no = ''; 
-        $scope.no = ''; 
-        $scope.status = "1"; 
-        $('#status').iCheck('check');
-        $('input').on('ifUnchecked', function(event){
-          $scope.status =0;
-        });
-        $('input').on('ifChecked', function(event){
-          $scope.status =1;
-        });
+        $scope.readPinjam();
+        $scope.header = "Tambahkan Pengembalian";
+        $scope.idKembali = '';
+        $scope.tglKembali = ""; 
+        $scope.denda = ""; 
+        $scope.idPin = ""; 
     }
 
-    //delete informasi
-    $scope.delete = function(id, info) {
+    //delete 
+    $scope.delete = function(id, data) {
         swal({
             title: 'Hapus',
-            text: "Apakah anda ingin menghapus jenis ? ",
+            text: "Apakah anda ingin menghapus member ? ",
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -44,9 +66,7 @@ app.controller('jenisController', function($rootScope, $scope, $http) {
             if (result.value) {
                 $("body").append(loadScreen);
                 $http.post(deletePHP, {
-                    'id': id,
-                    'userID': $rootScope.sessionId,
-                    'jenis': info ? info : '',
+                    'id': id
                 }).then(function(response) {
                     $(".wraploading").remove();
                     if (response.data.success) {
@@ -70,45 +90,36 @@ app.controller('jenisController', function($rootScope, $scope, $http) {
 
     //clear form modal hide
     $('#modalSubmit').on('hidden.bs.modal', function() {
-        $scope.header = '';
-        $scope.jenis = '';
-        $scope.no = '';
-        $scope.status = '';
+        $scope.idKembali = '';
+        $scope.tglKembali = ""; 
+        $scope.denda = ""; 
+        $scope.idPin = ""; 
     })
 
     //read edit
     $scope.readEdit = function(idArrayData) {
-      $scope.header = "Edit Jenis";
-      var dataEdit = $scope.datafilter[idArrayData];
-      $scope.jenisID = dataEdit._jenisID;
-      $scope.jenis = dataEdit._jenis;
-      $scope.no = dataEdit._no;
-      $scope.status = dataEdit._status;
-      if ($scope.status ==1) {
-        $('#status').iCheck('check');
-      }else{
-        $('#status').iCheck('uncheck');
-      }
-      $('input').on('ifUnchecked', function(event){
-        $scope.status =0;
-      });
-      $('input').on('ifChecked', function(event){
-        $scope.status =1;
-      });
-                                    
+        
+      $scope.header = "Edit Pengembalian";
+      var dataEdit = $scope.dataKembali.find( data => data.idKembali === idArrayData );
+      console.log(dataEdit);
+      $scope.idKembali = dataEdit.idKembali;
+      $scope.tglKembali = dataEdit.tglKembali; 
+      $scope.denda = dataEdit.denda; 
+      $scope.idPin = dataEdit.idPin; 
+      $scope.readPinjam(dataEdit.idPin);
     }
 
 
     $scope.action = function() {
-        console.log($scope.status);
         $("body").append(loadScreen);
-
         $http.post(actionPHP, {
-            'id': $scope.jenisID ? $scope.jenisID : '',   
-            'jenis': $scope.jenis,
-            'no': $scope.no,
-            'status': $scope.status,
-            'userID': 1,
+            'idKembali':$scope.idKembali,
+            'tglKembali':$scope.tglKembali,
+            'denda':$scope.denda, 
+            'idPin':$scope.idPin,
+            'idUser':$rootScope.sesid
+            
+            
         }).then(function(response) {
             $(".wraploading").remove();
             if (response.data.success) {
@@ -125,7 +136,6 @@ app.controller('jenisController', function($rootScope, $scope, $http) {
                     response.data.message,
                     'error',
                 )
-                swal.closeModal()
             }
         })
     }

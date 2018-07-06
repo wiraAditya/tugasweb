@@ -25,7 +25,7 @@ app.config(function ($routeProvider) {
         })
         .when("/pengembalian", {
             templateUrl: "app/component/kembali/kembali.html",
-            controller:"kembaliCtrl "
+            controller:"pengembalianCtrl"
         })
         .otherwise({
             redirectTo: '/',

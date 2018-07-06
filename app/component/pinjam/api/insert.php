@@ -1,27 +1,41 @@
 <?php
-  require_once($_SERVER['DOCUMENT_ROOT'].'/maha/module/config.php');
-  require_once($_SERVER['DOCUMENT_ROOT'].'/maha/module/function.php');
+  require_once('../../../module/config.php');
   header('Content-Type: application/json');
 
   $dataParams = json_decode(file_get_contents('php://input'));
   // $dataParams = json_decode($_POST['data']);
 
-  $id = isset($dataParams->id) ? $db->real_escape_string($dataParams->id): '';
-  $jenis = isset($dataParams->jenis) ? $db->real_escape_string($dataParams->jenis): '';
-  $no = isset($dataParams->no) ? $db->real_escape_string($dataParams->no): '';
-  $status = isset($dataParams->status) ? $db->real_escape_string($dataParams->status): '0';
-  $userId = isset($dataParams->userId) ? $db->real_escape_string($dataParams->userId): '';
+  $id = isset($dataParams->idPin) ? $db->real_escape_string($dataParams->idPin): '';
+ 
+  $idBuku = isset($dataParams->idBuku) ? $db->real_escape_string($dataParams->idBuku): '';
+  $kode = isset($dataParams->kode) ? $db->real_escape_string($dataParams->kode): '';
+  $idMember = isset($dataParams->idMember) ? $db->real_escape_string($dataParams->idMember): '';
+  $idUser = isset($dataParams->idUser) ? $db->real_escape_string($dataParams->idUser): '';
+  $jaminan = isset($dataParams->jaminan) ? $db->real_escape_string($dataParams->jaminan): '';
+ 
+  $tglKembali = isset($dataParams->tglKembali)&&!empty($dataParams->tglKembali) ? date("Y-m-d",strtotime($db->real_escape_string($dataParams->tglKembali))): '';
+  $tglPinjam = isset($dataParams->tglPinjam)&&!empty($dataParams->tglPinjam) ? date("Y-m-d",strtotime($db->real_escape_string($dataParams->tglPinjam))): '';
+
   
   $act = '';
   $error = '';
-    
-  if(empty($jenis)){
-    $error .= 'Jenis harus diisi<br>';
+   
+ 
+  if(empty($tglKembali)){
+    $error .= 'Tanggal kembali harus diisi<br>';
   }
-  if(empty($no)){
-    $error .= 'No harus diisi<br>';
+  if(empty($tglKembali)){
+    $error .= 'Tanggal kembali harus diisi<br>';
   }
-
+  if(empty($idMember)){
+    $error .= 'Member harus diisi<br>';
+  }
+  if(empty($idBuku)){
+    $error .= 'Buku harus diisi<br>';
+  }
+  if(empty($jaminan)){
+    $error .= 'Jaminan harus diisi<br>';
+  }
    
   if($error != '') {
     die(json_encode(array('success'=>false, 'message'=>$error)));
@@ -29,32 +43,30 @@
   
   if(empty($id))
   {
-    
-    $sql = "INSERT INTO jenis_invt_ (_jenis, _no,_status) VALUES (?, ?, ?)";
-    $stmt = $db->prepare($sql) or die($db->error);
-    $stmt->bind_param('sss', $jenis,$no,$status);
-    $executeAction = $stmt->execute() or die($db->error);
-
+    $query = $db->query("INSERT INTO peminjaman VALUES ('','$kode','$tglPinjam','$tglKembali','$jaminan','$idUser','$idMember','$idBuku')");
     $act = 'Menambah';
   }
   else
   {
-    $sql = "UPDATE jenis_invt_ SET _jenis=?, _no=?, _status=? WHERE _jenisID=?";
-    $stmt = $db->prepare($sql) or die($db->error);
-    $stmt->bind_param('ssss', $jenis,$no,$status,$id);
-    $executeAction = $stmt->execute() or die($db->error);
-    
-    $act = 'Mengubah';
+    $act = 'Mengedit';
+    $query = $db->query("UPDATE peminjaman set 
+                                          kode = '$kode',
+                                          tglPinjam = '$tglPinjam',
+                                          tglKembali = '$tglKembali',
+                                          jaminan = '$jaminan',
+                                          idMember = '$idMember',
+                                          idBuku = '$idBuku'
+                                          where idPin = $id
+                                          ");
+      
   }
   
-  $historyMessage = $act.' jenis '.$jenis;
     
-  //createHistory($db, $historyMessage, $userId);
 
-  $success = array('success' => true, 'message'=>$act.' jenis sukses' );
-  $failed = array('success' => false, 'message'=>$act.' jenis gagal' );
+  $success = array('success' => true, 'message'=>$act.' peminjaman sukses' );
+  $failed = array('success' => false, 'message'=>$act.' peminjaman gagal' );
 
-  print_r(json_encode($executeAction ? $success : $failed));
+  print_r(json_encode($query ? $success : $failed));
 
 
 ?>

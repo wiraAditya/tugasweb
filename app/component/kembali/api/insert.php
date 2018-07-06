@@ -5,8 +5,8 @@
   $dataParams = json_decode(file_get_contents('php://input'));
   // $dataParams = json_decode($_POST['data']);
 
-  $id = isset($dataParams->idMember) ? $db->real_escape_string($dataParams->idMember): '';
-  $tgKembali = isset($dataParams->tgKembali) ? $db->real_escape_string($dataParams->tgKembali): '';
+  $id = isset($dataParams->idKembali) ? $db->real_escape_string($dataParams->idKembali): '';
+  $tglKembali = isset($dataParams->tglKembali)&&!empty($dataParams->tglKembali) ? date("Y-m-d",strtotime($db->real_escape_string($dataParams->tglKembali))): '';
   $denda = isset($dataParams->denda) ? $db->real_escape_string($dataParams->denda): '';
   $idPin = isset($dataParams->idPin) ? $db->real_escape_string($dataParams->idPin): '';
   $idUser = isset($dataParams->idUser) ? $db->real_escape_string($dataParams->idUser): '';
@@ -15,8 +15,11 @@
   $error = '';
    
  
-  if(empty($tgKembali)){
+  if(empty($tglKembali)){
     $error .= 'Tanggal kembali harus diisi<br>';
+  }
+  if(empty($idPin)){
+    $error .= 'Peminjaman harus diisi<br>';
   }
    
   if($error != '') {
@@ -25,17 +28,19 @@
   
   if(empty($id))
   {
-    $query = $db->query("INSERT INTO pengembalian VALUES ('','$tgKembali','$denda','$idPin','$idUser')");
+    $query = $db->query("INSERT INTO pengembalian VALUES ('','$tglKembali','$denda','$idPin','$idUser')");
     $act = 'Menambah';
   }
   else
   {
     $act = 'Mengedit';
     $query = $db->query("UPDATE pengembalian set 
-                                          tgKembali = '$tgKembali',
-                                          denda = '$denda'
+                                          tglKembali = '$tglKembali',
+                                          denda = '$denda',
+                                          idPin = '$idPin'
                                           where idKembali = $id
                                           ");
+    
   }
   
     

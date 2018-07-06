@@ -6,14 +6,13 @@
  
   $id = isset($dataParams->id) ? $db->real_escape_string($dataParams->id): '';
    if (empty($id)) {
-    die(json_encode(array('success'=>false, 'message'=>'hapus member gagal')));
+    die(json_encode(array('success'=>false, 'message'=>'hapus peminjaman gagal')));
    }
-  $sql = $db->query("DELETE from detpinjam  WHERE idpinjam = $id");
-  $sql2 = $db->query("DELETE from peminjaman  WHERE idpinjam = $id");
+  $sql2 = $db->query("DELETE from peminjaman  WHERE idPin = $id");
   
-  if($sql&&$sql2) {
-    print_r(json_encode(array('success'=>true, 'message'=>'hapus member sukses')));
+  if($sql2) {
+    print_r(json_encode(array('success'=>true, 'message'=>'hapus peminjaman sukses')));
   }else{
-    print_r(json_encode(array('success'=>false, 'message'=>'hapus member gagal')));
+    print_r(json_encode(array('success'=>false, 'message'=>'hapus peminjaman gagal')));
   }
 ?>

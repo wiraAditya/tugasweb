@@ -26,7 +26,7 @@
     <link href="vendors/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
     <link href="vendors/iCheck/square/green.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css" />
     <!-- Main styles for this application-->
     <link href="css/style.min.css" rel="stylesheet">
     <link href="css/custom.css" rel="stylesheet">
@@ -134,12 +134,12 @@
       </header>
       <div class="app-body">
         <div class="sidebar">
-          <nav class="sidebar-nav">
+          <nav class="sidebar-nav" ng-if="sesrole==1">
             <ul class="nav">
               <button class="sidebar-minimizer brand-minimizer" type="button"></button>
               <li class="navbar-header text-center">
                 <i class="fa fa-user-circle"></i>
-                <p>Admin asdasd ads</p>
+                <p>{{sesnama}}</p>
               </li>
               <li class="nav-title">Menu</li>
               <li class="nav-item">
@@ -166,13 +166,35 @@
                   </li>
                 </ul>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#!/kategori">
-                  <i class="nav-icon fa fa-circle-o"></i> Kategori Buku</a>
+              <li class="nav-item nav-dropdown">
+                <a class="nav-link nav-dropdown-toggle"  >
+                  <i class="nav-icon fa fa-shopping-cart"></i> Transaksi</a>
+                <ul class="nav-dropdown-items">
+                  <li class="nav-item">
+                    <a class="nav-link" href="#!/peminjaman">
+                      <i class="nav-icon fa fa-circle-o"></i> Peminjaman</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#!/pengembalian">
+                      <i class="nav-icon fa fa-circle-o"></i> Pengembalian</a>
+                  </li>
+                </ul>
               </li>
+            </ul>
+          </nav>
+          <nav class="sidebar-nav" ng-if="sesrole==2">
+            <ul class="nav">
+              <button class="sidebar-minimizer brand-minimizer" type="button"></button>
+              <li class="navbar-header text-center">
+                <i class="fa fa-user-circle"></i>
+                <p>{{sesnama}}</p>
+              </li>
+              <li class="nav-title">Menu</li>
+              
               <li class="nav-item">
-                <a class="nav-link" href="#!/buku">
-                  <i class="nav-icon fa fa-circle-o"></i> Data Buku</a>
+                <a class="nav-link" href="#!/member">
+                  <i class="nav-icon fa fa-users"></i> Member
+                </a>
               </li>
               <li class="nav-item nav-dropdown">
                 <a class="nav-link nav-dropdown-toggle"  >
@@ -188,14 +210,6 @@
                   </li>
                 </ul>
               </li>
-              <li class="nav-item">
-                    <a class="nav-link" href="#!/peminjaman">
-                      <i class="nav-icon fa fa-circle-o"></i> Peminjaman</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#!/pengembalian">
-                      <i class="nav-icon fa fa-circle-o"></i> Pengembalian</a>
-                  </li>
             </ul>
           </nav>
           
@@ -272,7 +286,7 @@
     <!-- Plugins and scripts required by this view-->
     <script src="vendors/chart.js/js/Chart.min.js"></script>
     <script src="vendors/@coreui/coreui-plugin-chartjs-custom-tooltips/js/custom-tooltips.min.js"></script>
-  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
     <script src="js/angular/angular.min.js"></script>
     <script src="js/angular/angular-route.min.js"></script>
     <script src="js/angular/angular-cookies.min.js"></script>
