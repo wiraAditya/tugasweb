@@ -9,7 +9,7 @@
 	$menit -= $jam * 60;
  	$offset = sprintf('%+d:%02d', $tanda * $jam, $menit);
 	
-	$db = new mysqli('bm3sinaga17.csltpownxziv.ap-southeast-1.rds.amazonaws.com:3306', 'admin', 'PU5p3mXbM3', 'db_elib') or die($db->error);
+	$db = new mysqli('www.resellerbase.id', 'admin_admin', 'admin01', 'admin_e_lib') or die($db->error);
 	// $db = new mysqli('localhost', 'root', '', 'db_elib') or die($db->error);
 	$db->query("SET time_zone = '$offset'") or die($db->error);
 ?>

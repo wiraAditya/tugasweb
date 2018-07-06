@@ -152,7 +152,15 @@
                   <i class="nav-icon fa fa-users"></i> Member
                 </a>
               </li>
-              <li class="nav-item nav-dropdown">
+              <li class="nav-item">
+                <a class="nav-link" href="#!/kategori">
+                  <i class="nav-icon fa fa-circle-o"></i> Kategori Buku</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#!/buku">
+                  <i class="nav-icon fa fa-circle-o"></i> Data Buku</a>
+              </li>
+<!--               <li class="nav-item nav-dropdown">
                 <a class="nav-link nav-dropdown-toggle"  >
                   <i class="nav-icon fa fa-book"></i> Buku</a>
                 <ul class="nav-dropdown-items">
@@ -165,21 +173,16 @@
                       <i class="nav-icon fa fa-circle-o"></i> Data Buku</a>
                   </li>
                 </ul>
-              </li>
-              <li class="nav-item nav-dropdown">
-                <a class="nav-link nav-dropdown-toggle"  >
-                  <i class="nav-icon fa fa-shopping-cart"></i> Transaksi</a>
-                <ul class="nav-dropdown-items">
-                  <li class="nav-item">
-                    <a class="nav-link" href="#!/peminjaman">
-                      <i class="nav-icon fa fa-circle-o"></i> Peminjaman</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#!/pengembalian">
-                      <i class="nav-icon fa fa-circle-o"></i> Pengembalian</a>
-                  </li>
-                </ul>
-              </li>
+              </li> -->
+               <li class="nav-item">
+                 <a class="nav-link" href="#!/peminjaman">
+                   <i class="nav-icon fa fa-circle-o"></i> Peminjaman</a>
+               </li>
+               <li class="nav-item">
+                 <a class="nav-link" href="#!/pengembalian">
+                   <i class="nav-icon fa fa-circle-o"></i> Pengembalian</a>
+               </li>
+              
             </ul>
           </nav>
           <nav class="sidebar-nav" ng-if="sesrole==2">
@@ -196,19 +199,13 @@
                   <i class="nav-icon fa fa-users"></i> Member
                 </a>
               </li>
-              <li class="nav-item nav-dropdown">
-                <a class="nav-link nav-dropdown-toggle"  >
-                  <i class="nav-icon fa fa-shopping-cart"></i> Transaksi</a>
-                <ul class="nav-dropdown-items">
-                  <li class="nav-item">
-                    <a class="nav-link" href="#!/peminjaman">
-                      <i class="nav-icon fa fa-circle-o"></i> Peminjaman</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#!/pengembalian">
-                      <i class="nav-icon fa fa-circle-o"></i> Pengembalian</a>
-                  </li>
-                </ul>
+              <li class="nav-item">
+                <a class="nav-link" href="#!/peminjaman">
+                  <i class="nav-icon fa fa-circle-o"></i> Peminjaman</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#!/pengembalian">
+                  <i class="nav-icon fa fa-circle-o"></i> Pengembalian</a>
               </li>
             </ul>
           </nav>
